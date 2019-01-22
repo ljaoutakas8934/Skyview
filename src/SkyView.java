@@ -3,35 +3,32 @@ public class SkyView
     private double [] [] view;
     public SkyView (int numRows, int numCols, double [] scanned)
     {
-
         view = new double[numRows][numCols];
-
-
-        int d = 1;
-        int j = 0;
-        // for every row
-        for( int i = 0; i < numRows; i++)
+        boolean LR = true;
+        int index = 0;
+        for (int r = 0; r < numRows; r++)
         {
-            if (d>0)
+            //for each row
+            if (LR)
             {
-                for (int n = 0; n < numCols; n++)
+                for (int c = 0; c < numCols; c++)
                 {
-
-                    view [i] [n] = scanned [j];
-                    j++;
+                    //left to right
+                    view [r] [c] = scanned [index];
+                    index++;
                 }
             }
             else
             {
-                for (int n = numCols-1; n>-1; n--)
+                for (int c = numCols-1; c > -1; c--)
                 {
-                    view [i] [n] = scanned [j];
-                    j++;
+                    //right to left
+                    view [r] [c] = scanned [index];
+                    index++;
                 }
             }
-            d = -1 * d;
+            LR = ! LR;
         }
-        System.out.println(this.view[0][1]);
     }
 
     public String toString ()
@@ -46,7 +43,24 @@ public class SkyView
         }
         return out;
     }
-
+    
+    
+    public double getAverage (int startRow, int endRow, int startCol, int endCol)
+    {
+        double total = 0;
+        int index = 0;
+        // for every row:
+        for (int r = startRow; r < endRow + 1; r++)
+        {
+            //for every column:
+            for (int c = startCol; c < endCol+1; c++)
+            {
+                total = total + view [r] [c];
+                index ++;
+            }
+        }
+        return (total/index);
+    }
 
 
 
@@ -62,6 +76,8 @@ public class SkyView
 
         System.out.println(sv1);
         System.out.println(sv2);
+        System.out.println("Average 1: " + sv1.getAverage (1,3,0,2));
+        System.out.println("Average 2: " + sv2.getAverage(0,1,0,1));
 
     }
 
